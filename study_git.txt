@@ -1,3 +1,77 @@
 study git
 hello git
 good good study ,day day up!
+
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        // 生成FIFO队列
+        Queue<TreeNode> Q = new LinkedList<>();
+        // 如果结点不为空，那么加入FIFO队列
+        if (root != null) {
+            Q.offer(root);
+        }
+        // ans用于保存层次遍历的结果
+        List<List<Integer>> ans = new LinkedList<>();
+        // 开始利用FIFO队列进行层次遍历
+        while (Q.size() > 0) {
+            // 取出当前层里面元素的个数
+            final int qSize = Q.size();
+            // 当前层的结果存放于tmp链表中
+            List<Integer> tmp = new LinkedList<>();
+            // 遍历当前层的每个结点
+            for (int i = 0; i < qSize; i++) {
+                // 当前层前面的结点先出队
+                TreeNode cur = Q.poll();
+                // 把结果存放当于当前层中
+                tmp.add(cur.val);
+                // 把下一层的结点入队，注意入队时需要非空才可以入队。
+                if (cur.left != null) {
+                    Q.offer(cur.left);
+                }
+                if (cur.right != null) {
+                    Q.offer(cur.right);
+                }
+            }
+            // 把当前层的结果放到返回值里面。
+            ans.add(tmp);
+        }
+        return ans;
+    }
+}
+
+
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> ans = new ArrayList<>();
+        // 初始化当前层结点
+        List<TreeNode> curLevel = new ArrayList<>();
+        // 注意：需要root不空的时候才加到里面。
+        if (root != null) {
+            curLevel.add(root);
+        }
+        while (curLevel.size() > 0) {
+            // 准备用来存放下一层的结点
+            List<TreeNode> nextLevel = new ArrayList<>();
+            // 用来存放当前层的结果
+            List<Integer> curResult = new ArrayList<>();
+            // 遍历当前层的每个结点
+            for (TreeNode cur: curLevel) {
+                // 把当前层的值存放到当前结果里面
+                curResult.add(cur.val);
+                // 生成下一层
+                if (cur.left != null) {
+                    nextLevel.add(cur.left);
+                }
+                if (cur.right != null) {
+                    nextLevel.add(cur.right);
+                }
+            }
+            // 注意这里的更迭!滚动前进
+            curLevel = nextLevel;
+            // 把当前层的值放到结果里面
+            ans.add(curResult);
+        }
+        return ans;
+    }
+}
+
